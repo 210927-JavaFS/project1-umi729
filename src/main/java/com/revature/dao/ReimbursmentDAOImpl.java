@@ -19,8 +19,8 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 
 	@Override
 	public Reimbursment findById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Session session = HibernateUtil.getSession();
+		return session.get(Reimbursment.class, id);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 			Transaction tx = session.beginTransaction();
 			session.save(rec);
 			tx.commit();
-			//HibernateUtil.closeSession();
+			HibernateUtil.closeSession();
 			return true;
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -50,6 +50,21 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 			Session session = HibernateUtil.getSession();
 			Transaction tx = session.beginTransaction();
 			session.merge(rec);
+			tx.commit();
+			HibernateUtil.closeSession();
+			return true;
+		} catch (HibernateException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean delete(Reimbursment rec) {
+		try {
+			Session session = HibernateUtil.getSession();
+			Transaction tx = session.beginTransaction();
+			session.delete(rec);
 			tx.commit();
 			HibernateUtil.closeSession();
 			return true;

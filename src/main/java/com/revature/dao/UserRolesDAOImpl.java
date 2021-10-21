@@ -6,29 +6,29 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import com.revature.models.UserClass;
+import com.revature.models.UserRoles;
 import com.revature.utils.HibernateUtil;
 
-public class UserClassDAOImpl implements UserClassDAO {
+public class UserRolesDAOImpl implements UserRolesDAO {
 
 	@Override
-	public List<UserClass> getAllUser() {
+	public List<UserRoles> getAllUser() {
 		Session session = HibernateUtil.getSession();
-		return session.createQuery("FROM UserClass").list();
+		return session.createQuery("FROM UserRoles").list();
 	}
 
 	@Override
-	public UserClass getUserById(int usr) {
+	public UserRoles getUserById(int roleId) {
 		Session session = HibernateUtil.getSession();
-		return session.get(UserClass.class, usr);
+		return session.get(UserRoles.class, roleId);
 	}
 
 	@Override
-	public boolean insert(UserClass usr) {
+	public boolean insert(UserRoles urole) {
 		try {
 			Session session = HibernateUtil.getSession();
 			Transaction tx = session.beginTransaction();
-			session.save(usr);
+			session.save(urole);
 			tx.commit();
 			HibernateUtil.closeSession();
 			return true;
@@ -40,11 +40,11 @@ public class UserClassDAOImpl implements UserClassDAO {
 	}
 
 	@Override
-	public boolean update(UserClass usr) {
+	public boolean update(UserRoles urole) {
 		try {
 			Session session = HibernateUtil.getSession();
 			Transaction tx = session.beginTransaction();
-			session.merge(usr);
+			session.merge(urole);
 			tx.commit();
 			HibernateUtil.closeSession();
 			return true;
@@ -52,15 +52,14 @@ public class UserClassDAOImpl implements UserClassDAO {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 
 	@Override
-	public boolean delete(UserClass usr) {
+	public boolean delete(UserRoles urole) {
 		try {
 			Session session = HibernateUtil.getSession();
 			Transaction tx = session.beginTransaction();
-			session.delete(usr);
+			session.delete(urole);
 			tx.commit();
 			HibernateUtil.closeSession();
 			return true;
