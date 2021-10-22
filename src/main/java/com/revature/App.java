@@ -1,32 +1,31 @@
 package com.revature;
 
-import java.util.List;
+import com.revature.controllers.Controller;
+import com.revature.controllers.ReimController;
+import com.revature.controllers.RoleController;
+import com.revature.controllers.UserController;
 
-import com.revature.dao.UserClassDAOImpl;
-import com.revature.models.Reimbursment;
-import com.revature.models.UserClass;
-import com.revature.models.UserRoles;
-import com.revature.services.ReimbursmentSer;
+import io.javalin.Javalin;
+import io.javalin.http.staticfiles.Location;
 
 public class App {
+	private static Javalin app;
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		ReimbursmentSer rb= new ReimbursmentSer();
-		
-		
-		
-		UserClass uc=new UserClass("umerzahid",  "myPassword".hashCode() , "Umer", "Zahid", "umi729@gmail.com", new UserRoles("Manager", null), null);
-		UserClassDAOImpl ud=new UserClassDAOImpl();
-		ud.insert(uc);
-		
-		List<UserClass> list1=ud.getAllUser();
-		
-		List<Reimbursment> list=rb.getAllRec();
-		
-		System.out.println(list);
-		
+		app = Javalin.create((config) -> {
+			config.addStaticFiles("/static", Location.CLASSPATH);
+			
+		});
+
+		configure(new ReimController(), new RoleController(), new UserController());
+
+		app.start(8081);
 
 	}
 
+	private static void configure(Controller... controllers) {
+		for (Controller c : controllers) {
+			c.addRoutes(app);
+		}
+	}
 }

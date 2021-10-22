@@ -23,6 +23,7 @@ public class UserClassSer {
 	}
 
 	public boolean addUser(UserClass rec) {
+		rec.setPassword(String.valueOf(rec.getPassword()).hashCode());
 		return uc.insert(rec);
 	}
 
@@ -33,6 +34,10 @@ public class UserClassSer {
 	public boolean deleteUser(int id) {
 		UserClass rec = getUserClass(id);
 		return uc.delete(rec);
+	}
+	public boolean login(UserClass rec) {
+		
+		return uc.login(rec);
 	}
 
 }

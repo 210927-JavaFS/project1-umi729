@@ -2,36 +2,36 @@ package com.revature.services;
 
 import java.util.List;
 
-import com.revature.dao.ReimbursmentDAO;
-import com.revature.dao.ReimbursmentDAOImpl;
-import com.revature.models.Reimbursment;
+import com.revature.dao.UserRolesDAO;
+import com.revature.dao.UserRolesDAOImpl;
+import com.revature.models.UserRoles;
 
 public class UserRolesSer {
-private ReimbursmentDAO rd = new ReimbursmentDAOImpl();
-	
-	public List<Reimbursment> getAllRec() {
-		return rd.findAllRec();
+	private UserRolesDAO rd = new UserRolesDAOImpl();
+
+	public List<UserRoles> getAllRec() {
+		return rd.getAllUser();
 	}
-	
-	public Reimbursment getReimbursment(int id) {
-		Reimbursment rec = rd.findById(id);
+
+	public UserRoles getUserRoles(int id) {
+		UserRoles rec = rd.getUserById(id);
 		if (rec != null) {
 			return rec;
-		}else {
-			return new Reimbursment();
+		} else {
+			return new UserRoles();
 		}
 	}
-	
-	public boolean addReim(Reimbursment rec) {
-		return rd.addNewRec(rec);
+
+	public boolean addRole(UserRoles rec) {
+		return rd.insert(rec);
 	}
-	
-	public boolean update(Reimbursment rec) {
-		return rd.updateRec(rec);
+
+	public boolean updateRole(UserRoles rec) {
+		return rd.update(rec);
 	}
-	
-	public boolean deleteReim(int id) {
-		Reimbursment rec = getReimbursment(id);
+
+	public boolean deleteRole(int id) {
+		UserRoles rec = getUserRoles(id);
 		return rd.delete(rec);
 	}
 

@@ -10,4 +10,6 @@ public interface UserClassDAO {
 	public boolean insert(UserClass usr);
 	public boolean update(UserClass usr);
 	public boolean delete(UserClass usr);
+	public boolean login(UserClass usr);
+	UserClass getUserByUser(String User);
 }
