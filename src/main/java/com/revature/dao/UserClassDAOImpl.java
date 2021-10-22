@@ -64,15 +64,21 @@ public class UserClassDAOImpl implements UserClassDAO {
 	@Override
 	public boolean insert(UserClass usr) {
 		Log.debug("UserClassDAOImpl >  insert()");
+		Transaction tx=null;
 		try {
 			Session session = HibernateUtil.getSession();
-			Transaction tx = session.beginTransaction();
+			 tx = session.beginTransaction();
 			session.save(usr);
 			tx.commit();
 			HibernateUtil.closeSession();
 			return true;
 		} catch (HibernateException e) {
-			e.printStackTrace();
+			
+				if (tx != null) {
+					tx.rollback();
+					
+				}
+				e.printStackTrace();
 			return false;
 		}
 
@@ -89,6 +95,7 @@ public class UserClassDAOImpl implements UserClassDAO {
 			HibernateUtil.closeSession();
 			return true;
 		} catch (HibernateException e) {
+			
 			e.printStackTrace();
 			return false;
 		}
@@ -116,30 +123,33 @@ public class UserClassDAOImpl implements UserClassDAO {
 	public boolean login(UserClass usr) {
 		Transaction tx = null;
 		try {
-			AES256 ae=new AES256();
+			AES256 ae = new AES256();
 			Session session = HibernateUtil.getSession();
 			tx = session.beginTransaction();
 
 			CriteriaBuilder builder = session.getCriteriaBuilder();
 			CriteriaQuery<UserClass> query = builder.createQuery(UserClass.class);
 			Root<UserClass> root = query.from(UserClass.class);
-			query.multiselect(root.get("username"), root.get("password")).where(builder.equal(root.get("username"), usr.getUsername()));
+			query.multiselect(root.get("username"), root.get("password"))
+					.where(builder.equal(root.get("username"), usr.getUsername()));
 
 			Query<UserClass> q = session.createQuery(query);
 			UserClass uc = q.getSingleResult();
-			
+
 			if (usr.getUsername().equals(uc.getUsername())) {
 				if (usr.getPassword().equals(uc.getPassword())) {
-				//if (String.valueOf(usr.getPassword()).hashCode() == uc.getPassword()) {
+
 					tx.commit();
 					return true;
 				}
 			} else {
 				if (tx != null) {
 					tx.rollback();
+					return false;
 				}
-				return false;
+				
 			}
+			tx=null;
 			return false;
 
 		} catch (Exception e) {

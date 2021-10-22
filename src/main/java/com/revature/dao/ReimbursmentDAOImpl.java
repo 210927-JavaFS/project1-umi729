@@ -13,6 +13,7 @@ import com.revature.utils.HibernateUtil;
 
 public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 	private static Logger Log = LoggerFactory.getLogger(ReimbursmentDAOImpl.class);
+
 	@Override
 	public List<Reimbursment> findAllRec() {
 		Log.debug("ReimbursmentDAOImpl >  findAllRec()");
@@ -37,15 +38,20 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 	@Override
 	public boolean addNewRec(Reimbursment rec) {
 		Log.debug("ReimbursmentDAOImpl >  addNewRec()");
+		Transaction tx = null;
 		try {
 			Session session = HibernateUtil.getSession();
-			Transaction tx = session.beginTransaction();
+			tx = session.beginTransaction();
 			session.save(rec);
 			tx.commit();
 			HibernateUtil.closeSession();
 			return true;
 		} catch (HibernateException e) {
 			e.printStackTrace();
+			if (tx != null) {
+				tx.rollback();
+
+			}
 			return false;
 		}
 	}
@@ -53,15 +59,20 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 	@Override
 	public boolean updateRec(Reimbursment rec) {
 		Log.debug("ReimbursmentDAOImpl >  updateRec()");
+		Transaction tx = null;
 		try {
 			Session session = HibernateUtil.getSession();
-			Transaction tx = session.beginTransaction();
+			tx = session.beginTransaction();
 			session.merge(rec);
 			tx.commit();
 			HibernateUtil.closeSession();
 			return true;
 		} catch (HibernateException e) {
 			e.printStackTrace();
+			if (tx != null) {
+				tx.rollback();
+
+			}
 			return false;
 		}
 	}
