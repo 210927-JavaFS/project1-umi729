@@ -23,7 +23,8 @@ public class UserClassSer {
 	}
 
 	public boolean addUser(UserClass rec) {
-		rec.setPassword(String.valueOf(rec.getPassword()).hashCode());
+		AES256 ae=new AES256();
+		rec.setPassword(ae.encrypt(rec.getPassword()));
 		return uc.insert(rec);
 	}
 
@@ -36,7 +37,8 @@ public class UserClassSer {
 		return uc.delete(rec);
 	}
 	public boolean login(UserClass rec) {
-		
+		AES256 ae=new AES256();
+		rec.setPassword(ae.encrypt(rec.getPassword()));
 		return uc.login(rec);
 	}
 

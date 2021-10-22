@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.revature.models.UserClass;
+import com.revature.services.AES256;
 import com.revature.utils.HibernateUtil;
 
 public class UserClassDAOImpl implements UserClassDAO {
@@ -115,6 +116,7 @@ public class UserClassDAOImpl implements UserClassDAO {
 	public boolean login(UserClass usr) {
 		Transaction tx = null;
 		try {
+			AES256 ae=new AES256();
 			Session session = HibernateUtil.getSession();
 			tx = session.beginTransaction();
 
@@ -125,9 +127,10 @@ public class UserClassDAOImpl implements UserClassDAO {
 
 			Query<UserClass> q = session.createQuery(query);
 			UserClass uc = q.getSingleResult();
-
+			
 			if (usr.getUsername().equals(uc.getUsername())) {
-				if (String.valueOf(usr.getPassword()).hashCode() == uc.getPassword()) {
+				if (usr.getPassword().equals(uc.getPassword())) {
+				//if (String.valueOf(usr.getPassword()).hashCode() == uc.getPassword()) {
 					tx.commit();
 					return true;
 				}
