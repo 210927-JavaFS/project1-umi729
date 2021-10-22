@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -31,9 +32,9 @@ public class UserClass {
 	@Column(unique = true)
 	private String email;
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name="roleId")
-	private UserRoles role;
+	@ManyToOne( fetch=FetchType.EAGER)
+	 private UserRoles role;
 
 	@OneToMany(mappedBy = "rid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Reimbursment> rec;
@@ -65,6 +66,17 @@ public class UserClass {
 		this.email = email;
 		this.role = role;
 		this.rec = rec;
+	}
+
+	
+	public UserClass(String username, String password, String fname, String lname, String email, UserRoles role) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.fname = fname;
+		this.lname = lname;
+		this.email = email;
+		this.role = role;
 	}
 
 	public UserClass(String username, String password) {

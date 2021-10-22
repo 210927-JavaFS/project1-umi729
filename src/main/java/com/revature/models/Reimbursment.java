@@ -44,14 +44,14 @@ public class Reimbursment {
 	@Enumerated(EnumType.STRING)
 	private R_Status rstatus;
 	
-	@OneToMany ( fetch=FetchType.EAGER)
+	
 	@JoinColumn(name="roleId")
-	@ManyToOne
+	@ManyToOne( fetch=FetchType.EAGER)
 	 private UserRoles role;
 	
-	@OneToMany ( fetch=FetchType.EAGER)
+	
 	@JoinColumn(name="userId")
-	@ManyToOne
+	@ManyToOne( fetch=FetchType.EAGER)
 	 private UserClass usr;
 
 	public Reimbursment(int rid, double amount, Date submitted, Date resolved, String description, String copyRec,

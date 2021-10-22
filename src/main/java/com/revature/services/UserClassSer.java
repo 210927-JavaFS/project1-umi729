@@ -8,7 +8,7 @@ import com.revature.models.UserClass;
 
 public class UserClassSer {
 	private UserClassDAO uc = new UserClassDAOImpl();
-
+	private static AES256 ae=new AES256();
 	public List<UserClass> getAllRec() {
 		return uc.getAllUser();
 	}
@@ -23,7 +23,7 @@ public class UserClassSer {
 	}
 
 	public boolean addUser(UserClass rec) {
-		AES256 ae=new AES256();
+		
 		rec.setPassword(ae.encrypt(rec.getPassword()));
 		return uc.insert(rec);
 	}
@@ -37,7 +37,7 @@ public class UserClassSer {
 		return uc.delete(rec);
 	}
 	public boolean login(UserClass rec) {
-		AES256 ae=new AES256();
+		
 		rec.setPassword(ae.encrypt(rec.getPassword()));
 		return uc.login(rec);
 	}

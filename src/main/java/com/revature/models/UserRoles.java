@@ -22,6 +22,9 @@ public class UserRoles {
 	 @Column(nullable = false, unique = true)
 	private String role;
 	
+	 @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+	private List<UserClass> uc;
+	 
 	@OneToMany(mappedBy = "rid", fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
 	private List<Reimbursment> rec;
 
@@ -36,6 +39,11 @@ public class UserRoles {
 		super();
 		this.role = role;
 		this.rec = rec;
+	}
+
+	public UserRoles(String role) {
+		super();
+		this.role = role;
 	}
 
 	public UserRoles() {
