@@ -168,6 +168,94 @@ public class Reimbursment {
 		return true;
 	}
 
+	public int getRid() {
+		return rid;
+	}
+
+	public void setRid(int rid) {
+		this.rid = rid;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	public Date getSubmitted() {
+		return submitted;
+	}
+
+	public void setSubmitted(Date submitted) {
+		this.submitted = submitted;
+	}
+
+	public Date getResolved() {
+		return resolved;
+	}
+
+	public void setResolved(Date resolved) {
+		this.resolved = resolved;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getCopyRec() {
+		return copyRec;
+	}
+
+	public void setCopyRec(String copyRec) {
+		this.copyRec = copyRec;
+	}
+
+	public int getRecipt() {
+		return recipt;
+	}
+
+	public void setRecipt(int recipt) {
+		this.recipt = recipt;
+	}
+
+	public R_Type getRtype() {
+		return rtype;
+	}
+
+	public void setRtype(R_Type rtype) {
+		this.rtype = rtype;
+	}
+
+	public R_Status getRstatus() {
+		return rstatus;
+	}
+
+	public void setRstatus(R_Status rstatus) {
+		this.rstatus = rstatus;
+	}
+
+	public UserRoles getRole() {
+		return role;
+	}
+
+	public void setRole(UserRoles role) {
+		this.role = role;
+	}
+
+	public UserClass getUsr() {
+		return usr;
+	}
+
+	public void setUsr(UserClass usr) {
+		this.usr = usr;
+	}
+
 	
 	
 }

@@ -25,7 +25,7 @@ public class UserClass {
 	@Column(unique = true, nullable = false )
 	private String username;
 
-	private String password;
+	private int password;
 
 	private String fname;
 
@@ -41,7 +41,7 @@ public class UserClass {
 	@OneToMany(mappedBy = "rid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Reimbursment> rec;
 
-	public UserClass(int userId, String username, String password, String fname, String lname, String email,
+	public UserClass(int userId, String username, int password, String fname, String lname, String email,
 			UserRoles role, List<Reimbursment> rec) {
 		super();
 		this.userId = userId;
@@ -54,7 +54,7 @@ public class UserClass {
 		this.rec = rec;
 	}
 
-	public UserClass(String username, String password, String fname, String lname, String email, UserRoles role,
+	public UserClass(String username, int password, String fname, String lname, String email, UserRoles role,
 			List<Reimbursment> rec) {
 		super();
 		this.username = username;
@@ -64,6 +64,13 @@ public class UserClass {
 		this.email = email;
 		this.role = role;
 		this.rec = rec;
+	}
+
+	
+	@Override
+	public String toString() {
+		return "UserClass [userId=" + userId + ", username=" + username + ", password=" + password + ", fname=" + fname
+				+ ", lname=" + lname + ", email=" + email + ", role=" + role + ", rec=" + rec + "]";
 	}
 
 	public UserClass() {
@@ -77,7 +84,7 @@ public class UserClass {
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((fname == null) ? 0 : fname.hashCode());
 		result = prime * result + ((lname == null) ? 0 : lname.hashCode());
-		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + password;
 		result = prime * result + ((rec == null) ? 0 : rec.hashCode());
 		result = prime * result + ((role == null) ? 0 : role.hashCode());
 		result = prime * result + userId;
@@ -109,10 +116,7 @@ public class UserClass {
 				return false;
 		} else if (!lname.equals(other.lname))
 			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
+		if (password != other.password)
 			return false;
 		if (rec == null) {
 			if (other.rec != null)
@@ -134,12 +138,72 @@ public class UserClass {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "UserClass [userId=" + userId + ", username=" + username + ", password=" + password + ", fname=" + fname
-				+ ", lname=" + lname + ", email=" + email + ", role=" + role + ", rec=" + rec + "]";
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public int getPassword() {
+		return password;
+	}
+
+	public void setPassword(int password) {
+		this.password = password;
+	}
+
+	public String getFname() {
+		return fname;
+	}
+
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+
+	public String getLname() {
+		return lname;
+	}
+
+	public void setLname(String lname) {
+		this.lname = lname;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public UserRoles getRole() {
+		return role;
+	}
+
+	public void setRole(UserRoles role) {
+		this.role = role;
+	}
+
+	public List<Reimbursment> getRec() {
+		return rec;
+	}
+
+	public void setRec(List<Reimbursment> rec) {
+		this.rec = rec;
 	}
 
 	
 
+	
+	
 }
