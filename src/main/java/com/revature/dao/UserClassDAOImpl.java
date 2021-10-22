@@ -74,10 +74,11 @@ public class UserClassDAOImpl implements UserClassDAO {
 			return true;
 		} catch (HibernateException e) {
 			
-				if (tx != null) {
-					tx.rollback();
-					
-				}
+			/*
+			 * if (tx != null) { tx.rollback();
+			 * 
+			 * }
+			 */
 				e.printStackTrace();
 			return false;
 		}

@@ -3,6 +3,7 @@ package com.revature.models;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,12 +46,12 @@ public class Reimbursment {
 	
 	
 	@JoinColumn(name="roleId")
-	@ManyToOne( fetch=FetchType.EAGER)
+	@ManyToOne( fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	 private UserRoles role;
 	
 	
 	@JoinColumn(name="userId")
-	@ManyToOne( fetch=FetchType.EAGER)
+	@ManyToOne( fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	 private UserClass usr;
 
 	public Reimbursment(int rid, double amount, Date submitted, Date resolved, String description, String copyRec,

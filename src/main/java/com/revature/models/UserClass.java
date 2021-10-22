@@ -33,10 +33,10 @@ public class UserClass {
 	private String email;
 	
 	@JoinColumn(name="roleId")
-	@ManyToOne( fetch=FetchType.EAGER)
+	@ManyToOne( fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	 private UserRoles role;
 
-	@OneToMany(mappedBy = "rid", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usr", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Reimbursment> rec;
 
 	

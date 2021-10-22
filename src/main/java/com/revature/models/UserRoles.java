@@ -22,10 +22,10 @@ public class UserRoles {
 	 @Column(nullable = false, unique = true)
 	private String role;
 	
-	 @OneToMany(mappedBy = "userId", fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+	 @OneToMany(mappedBy = "role", fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
 	private List<UserClass> uc;
 	 
-	@OneToMany(mappedBy = "rid", fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "role", fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
 	private List<Reimbursment> rec;
 
 	public UserRoles(int roleId, String role, List<Reimbursment> rec) {
