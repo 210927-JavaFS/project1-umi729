@@ -74,11 +74,11 @@ public class UserClassDAOImpl implements UserClassDAO {
 			return true;
 		} catch (HibernateException e) {
 			
-			/*
-			 * if (tx != null) { tx.rollback();
-			 * 
-			 * }
-			 */
+			
+			  if (tx != null) { tx.rollback();
+			  
+			  }
+			 
 				e.printStackTrace();
 			return false;
 		}
@@ -121,18 +121,18 @@ public class UserClassDAOImpl implements UserClassDAO {
 	}
 
 	@Override
-	public boolean login(UserClass usr) {
+	public UserClass login(UserClass usr) {
 		Transaction tx = null;
 		try {
 			AES256 ae = new AES256();
 			Session session = HibernateUtil.getSession();
-			tx = session.beginTransaction();
+			//tx = session.beginTransaction();
 
 			CriteriaBuilder builder = session.getCriteriaBuilder();
 			CriteriaQuery<UserClass> query = builder.createQuery(UserClass.class);
 			Root<UserClass> root = query.from(UserClass.class);
-			query.multiselect(root.get("username"), root.get("password"))
-					.where(builder.equal(root.get("username"), usr.getUsername()));
+			//query.multiselect(root.get("username"), root.get("password"))
+			query.select(root).where(builder.equal(root.get("username"), usr.getUsername()));
 
 			Query<UserClass> q = session.createQuery(query);
 			UserClass uc = q.getSingleResult();
@@ -140,25 +140,25 @@ public class UserClassDAOImpl implements UserClassDAO {
 			if (usr.getUsername().equals(uc.getUsername())) {
 				if (usr.getPassword().equals(uc.getPassword())) {
 
-					tx.commit();
-					return true;
+				//	tx.commit();
+					return uc;
 				}
 			} else {
 				if (tx != null) {
-					tx.rollback();
-					return false;
+					//tx.rollback();
+					return null;
 				}
 				
 			}
 			tx=null;
-			return false;
+			return null;
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (tx != null) {
-				tx.rollback();
+				//tx.rollback();
 			}
-			return false;
+			return null;
 		}
 	}
 

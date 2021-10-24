@@ -12,8 +12,8 @@ public class Test {
 		// TODO Auto-generated method stub
 
 		UserClassSer userSer=new UserClassSer();
-		UserRoles ur=new UserRoles("Manager");
-		userSer.addUser(new UserClass("umeaddhd", "mypassword", "Umer", "Zahid", "u9d@gmail.com", ur));
+		UserRoles ur=new UserRoles("Finance Manager");
+		userSer.addUser(new UserClass("umerzahid", "mypassword", "Umer", "Zahid", "umi729@gmail.com", ur));
 		userSer.addUser(new UserClass("umeahd", "mypassword", "Umer", "Zahid", "u9@gmail.com", ur));
 		userSer.addUser(new UserClass("umedaddhd", "mypassword", "Umer", "Zahid", "u9dd@gmail.com", ur));
 		//boolean list = userSer.login(new UserClass("umerzahid", "mypassword"));

@@ -6,8 +6,6 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,22 +25,20 @@ public class Reimbursment {
 	private double amount;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date submitted;
+	private Date dateOfSubmit;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date resolved;
+	private Date dateOfResolve;
 	
 	private String description;
 	
-	private String copyRec;
+	private String copyOfReceipt;
 	
-	private int recipt;
-	@Enumerated(EnumType.STRING)
+	private int reciptNo;
 	
-	private R_Type rtype;
+	private String rtype;
 	
-	@Enumerated(EnumType.STRING)
-	private R_Status rstatus;
+	private String rstatus;
 	
 	
 	@JoinColumn(name="roleId")
@@ -54,47 +50,56 @@ public class Reimbursment {
 	@ManyToOne( fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	 private UserClass usr;
 
-	public Reimbursment(int rid, double amount, Date submitted, Date resolved, String description, String copyRec,
-			int recipt, R_Type rtype, R_Status rstatus, UserRoles role, UserClass usr) {
+
+	public Reimbursment(int rid, double amount, Date dateOfSubmit, Date dateOfResolve, String description,
+			String copyOfReceipt, int reciptNo, String rtype, String rstatus, UserRoles role, UserClass usr) {
 		super();
 		this.rid = rid;
 		this.amount = amount;
-		this.submitted = submitted;
-		this.resolved = resolved;
+		this.dateOfSubmit = dateOfSubmit;
+		this.dateOfResolve = dateOfResolve;
 		this.description = description;
-		this.copyRec = copyRec;
-		this.recipt = recipt;
+		this.copyOfReceipt = copyOfReceipt;
+		this.reciptNo = reciptNo;
 		this.rtype = rtype;
 		this.rstatus = rstatus;
 		this.role = role;
 		this.usr = usr;
 	}
 
-	public Reimbursment(double amount, Date submitted, Date resolved, String description, String copyRec, int recipt,
-			R_Type rtype, R_Status rstatus, UserRoles role, UserClass usr) {
+
+	public Reimbursment(double amount, Date dateOfSubmit, Date dateOfResolve, String description, String copyOfReceipt,
+			int reciptNo, String rtype, String rstatus, UserRoles role, UserClass usr) {
 		super();
 		this.amount = amount;
-		this.submitted = submitted;
-		this.resolved = resolved;
+		this.dateOfSubmit = dateOfSubmit;
+		this.dateOfResolve = dateOfResolve;
 		this.description = description;
-		this.copyRec = copyRec;
-		this.recipt = recipt;
+		this.copyOfReceipt = copyOfReceipt;
+		this.reciptNo = reciptNo;
 		this.rtype = rtype;
 		this.rstatus = rstatus;
 		this.role = role;
 		this.usr = usr;
 	}
+
+
+	public Reimbursment(double amount, String description, String copyOfReceipt, int reciptNo, String rtype,
+			String rstatus) {
+		super();
+		this.amount = amount;
+		this.description = description;
+		this.copyOfReceipt = copyOfReceipt;
+		this.reciptNo = reciptNo;
+		this.rtype = rtype;
+		this.rstatus = rstatus;
+	}
+
 
 	public Reimbursment() {
 		super();
 	}
 
-	@Override
-	public String toString() {
-		return "Reimbursment [rid=" + rid + ", amount=" + amount + ", submitted=" + submitted + ", resolved=" + resolved
-				+ ", description=" + description + ", copyRec=" + copyRec + ", recipt=" + recipt + ", rtype=" + rtype
-				+ ", rstatus=" + rstatus + ", role=" + role + ", usr=" + usr + "]";
-	}
 
 	@Override
 	public int hashCode() {
@@ -103,18 +108,19 @@ public class Reimbursment {
 		long temp;
 		temp = Double.doubleToLongBits(amount);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((copyRec == null) ? 0 : copyRec.hashCode());
+		result = prime * result + ((copyOfReceipt == null) ? 0 : copyOfReceipt.hashCode());
+		result = prime * result + ((dateOfResolve == null) ? 0 : dateOfResolve.hashCode());
+		result = prime * result + ((dateOfSubmit == null) ? 0 : dateOfSubmit.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + recipt;
-		result = prime * result + ((resolved == null) ? 0 : resolved.hashCode());
+		result = prime * result + reciptNo;
 		result = prime * result + rid;
 		result = prime * result + ((role == null) ? 0 : role.hashCode());
 		result = prime * result + ((rstatus == null) ? 0 : rstatus.hashCode());
 		result = prime * result + ((rtype == null) ? 0 : rtype.hashCode());
-		result = prime * result + ((submitted == null) ? 0 : submitted.hashCode());
 		result = prime * result + ((usr == null) ? 0 : usr.hashCode());
 		return result;
 	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -127,22 +133,27 @@ public class Reimbursment {
 		Reimbursment other = (Reimbursment) obj;
 		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
 			return false;
-		if (copyRec == null) {
-			if (other.copyRec != null)
+		if (copyOfReceipt == null) {
+			if (other.copyOfReceipt != null)
 				return false;
-		} else if (!copyRec.equals(other.copyRec))
+		} else if (!copyOfReceipt.equals(other.copyOfReceipt))
+			return false;
+		if (dateOfResolve == null) {
+			if (other.dateOfResolve != null)
+				return false;
+		} else if (!dateOfResolve.equals(other.dateOfResolve))
+			return false;
+		if (dateOfSubmit == null) {
+			if (other.dateOfSubmit != null)
+				return false;
+		} else if (!dateOfSubmit.equals(other.dateOfSubmit))
 			return false;
 		if (description == null) {
 			if (other.description != null)
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
-		if (recipt != other.recipt)
-			return false;
-		if (resolved == null) {
-			if (other.resolved != null)
-				return false;
-		} else if (!resolved.equals(other.resolved))
+		if (reciptNo != other.reciptNo)
 			return false;
 		if (rid != other.rid)
 			return false;
@@ -151,14 +162,15 @@ public class Reimbursment {
 				return false;
 		} else if (!role.equals(other.role))
 			return false;
-		if (rstatus != other.rstatus)
-			return false;
-		if (rtype != other.rtype)
-			return false;
-		if (submitted == null) {
-			if (other.submitted != null)
+		if (rstatus == null) {
+			if (other.rstatus != null)
 				return false;
-		} else if (!submitted.equals(other.submitted))
+		} else if (!rstatus.equals(other.rstatus))
+			return false;
+		if (rtype == null) {
+			if (other.rtype != null)
+				return false;
+		} else if (!rtype.equals(other.rtype))
 			return false;
 		if (usr == null) {
 			if (other.usr != null)
@@ -168,94 +180,124 @@ public class Reimbursment {
 		return true;
 	}
 
+
 	public int getRid() {
 		return rid;
 	}
+
 
 	public void setRid(int rid) {
 		this.rid = rid;
 	}
 
+
 	public double getAmount() {
 		return amount;
 	}
+
 
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 
-	public Date getSubmitted() {
-		return submitted;
+
+	public Date getDateOfSubmit() {
+		return dateOfSubmit;
 	}
 
-	public void setSubmitted(Date submitted) {
-		this.submitted = submitted;
+
+	public void setDateOfSubmit(Date dateOfSubmit) {
+		this.dateOfSubmit = dateOfSubmit;
 	}
 
-	public Date getResolved() {
-		return resolved;
+
+	public Date getDateOfResolve() {
+		return dateOfResolve;
 	}
 
-	public void setResolved(Date resolved) {
-		this.resolved = resolved;
+
+	public void setDateOfResolve(Date dateOfResolve) {
+		this.dateOfResolve = dateOfResolve;
 	}
+
 
 	public String getDescription() {
 		return description;
 	}
 
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public String getCopyRec() {
-		return copyRec;
+
+	public String getCopyOfReceipt() {
+		return copyOfReceipt;
 	}
 
-	public void setCopyRec(String copyRec) {
-		this.copyRec = copyRec;
+
+	public void setCopyOfReceipt(String copyOfReceipt) {
+		this.copyOfReceipt = copyOfReceipt;
 	}
 
-	public int getRecipt() {
-		return recipt;
+
+	public int getReciptNo() {
+		return reciptNo;
 	}
 
-	public void setRecipt(int recipt) {
-		this.recipt = recipt;
+
+	public void setReciptNo(int reciptNo) {
+		this.reciptNo = reciptNo;
 	}
 
-	public R_Type getRtype() {
+
+	public String getRtype() {
 		return rtype;
 	}
 
-	public void setRtype(R_Type rtype) {
+
+	public void setRtype(String rtype) {
 		this.rtype = rtype;
 	}
 
-	public R_Status getRstatus() {
+
+	public String getRstatus() {
 		return rstatus;
 	}
 
-	public void setRstatus(R_Status rstatus) {
+
+	public void setRstatus(String rstatus) {
 		this.rstatus = rstatus;
 	}
+
 
 	public UserRoles getRole() {
 		return role;
 	}
 
+
 	public void setRole(UserRoles role) {
 		this.role = role;
 	}
+
 
 	public UserClass getUsr() {
 		return usr;
 	}
 
+
 	public void setUsr(UserClass usr) {
 		this.usr = usr;
 	}
 
-	
+
+	@Override
+	public String toString() {
+		return "Reimbursment [rid=" + rid + ", amount=" + amount + ", dateOfSubmit=" + dateOfSubmit + ", dateOfResolve="
+				+ dateOfResolve + ", description=" + description + ", copyOfReceipt=" + copyOfReceipt + ", reciptNo="
+				+ reciptNo + ", rtype=" + rtype + ", rstatus=" + rstatus + ", role=" + role + ", usr=" + usr + "]";
+	}
+
+
 	
 }

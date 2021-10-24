@@ -4,14 +4,36 @@ import java.util.List;
 
 import com.revature.dao.UserClassDAO;
 import com.revature.dao.UserClassDAOImpl;
+import com.revature.dao.UserRolesDAO;
+import com.revature.dao.UserRolesDAOImpl;
 import com.revature.models.UserClass;
+import com.revature.models.UserRoles;
 
 public class UserClassSer {
 	private UserClassDAO uc = new UserClassDAOImpl();
+	private static UserClass logUser;
+	private static UserRolesDAO urdao=new UserRolesDAOImpl();
 	private static AES256 ae=new AES256();
 	public List<UserClass> getAllRec() {
 		return uc.getAllUser();
 	}
+	
+	 static UserRoles getUserRoles() {
+		
+		if(logUser!=null) {
+			return urdao.getUserById(logUser.getRole().getRoleId());
+			
+		}
+		return null;
+	}
+	 static UserClass getUser() {
+			
+			if(logUser!=null) {
+				return logUser;
+			}
+			return null;
+		}
+	 
 
 	public UserClass getUserClass(int id) {
 		UserClass rec = uc.getUserById(id);
@@ -23,8 +45,9 @@ public class UserClassSer {
 	}
 
 	public boolean addUser(UserClass rec) {
-		
+		rec.setRole(getUserRoles());
 		rec.setPassword(ae.encrypt(rec.getPassword()));
+	
 		return uc.insert(rec);
 	}
 
@@ -36,10 +59,17 @@ public class UserClassSer {
 		UserClass rec = getUserClass(id);
 		return uc.delete(rec);
 	}
-	public boolean login(UserClass rec) {
+	public UserClass login(UserClass rec) {
 		
 		rec.setPassword(ae.encrypt(rec.getPassword()));
-		return uc.login(rec);
+		if(uc.login(rec)!=null) {
+			
+			logUser=uc.login(rec);
+			
+			return logUser;
+		}
+		
+		return null;
 	}
 
 }

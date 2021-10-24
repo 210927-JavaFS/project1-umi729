@@ -41,6 +41,15 @@ public class UserClass {
 
 	
 	
+	public UserClass(String username, String password, String fname, String lname, String email) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.fname = fname;
+		this.lname = lname;
+		this.email = email;
+	}
+
 	public UserClass(int userId, String username, String password, String fname, String lname, String email,
 			UserRoles role, List<Reimbursment> rec) {
 		super();

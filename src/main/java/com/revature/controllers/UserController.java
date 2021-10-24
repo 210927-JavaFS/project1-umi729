@@ -14,15 +14,18 @@ public class UserController implements Controller {
 
 	
 	private Handler loginAttempt = (ctx) -> {
+	
 		UserClass uc = ctx.bodyAsClass(UserClass.class);	
-		if(userSer.login(uc)) {
+		UserClass logback =userSer.login(uc);
+		if( logback !=null) {
 			
 			ctx.req.getSession(); 
-			System.out.println("Test in login if");
+			
+			ctx.json(logback);
 			ctx.status(200);
 		}else {
 			ctx.req.getSession().invalidate();// invalidates any open session tracking the client.
-			System.out.println(uc);
+			//System.out.println(uc);
 			ctx.status(401);
 		}
 	};
