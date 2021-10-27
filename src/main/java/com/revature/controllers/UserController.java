@@ -2,6 +2,8 @@ package com.revature.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import com.revature.models.UserClass;
 import com.revature.services.UserClassSer;
 
@@ -20,7 +22,9 @@ public class UserController implements Controller {
 		if( logback !=null) {
 			
 			ctx.req.getSession(); 
-			
+			ctx.req.setAttribute("currentsession", logback);
+			System.out.println("\n\n\n\n");
+			System.out.println(ctx.req.getAttribute("currentsession"));
 			ctx.json(logback);
 			ctx.status(200);
 		}else {

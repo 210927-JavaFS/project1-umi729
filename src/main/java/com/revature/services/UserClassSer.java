@@ -10,7 +10,7 @@ import com.revature.models.UserClass;
 import com.revature.models.UserRoles;
 
 public class UserClassSer {
-	private UserClassDAO uc = new UserClassDAOImpl();
+	private static UserClassDAO uc = new UserClassDAOImpl();
 	private static UserClass logUser;
 	private static UserRolesDAO urdao=new UserRolesDAOImpl();
 	private static AES256 ae=new AES256();
@@ -59,7 +59,7 @@ public class UserClassSer {
 		UserClass rec = getUserClass(id);
 		return uc.delete(rec);
 	}
-	public UserClass login(UserClass rec) {
+	public static UserClass login(UserClass rec) {
 		
 		rec.setPassword(ae.encrypt(rec.getPassword()));
 		if(uc.login(rec)!=null) {

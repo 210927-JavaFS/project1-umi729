@@ -1,12 +1,25 @@
+'use strict';
 const URL = "http://localhost:8080/";
 
-let buttonRow = document.getElementById("buttonRow");
+let emplyeesection = document.getElementById("emplyeesection");
+
 let loginButton = document.getElementById('loginButton');
+let viewTicketBtn= document.getElementById("viewAllTicket");
+loginButton.addEventListener("click",imageget);
+window.onload=()=>{
+  emplyeesection.style.display="block";
+}
+function imageget(){
+
+  
+}
+
+
 
 loginButton.addEventListener("click",loginToApp);
 
 //loginButton.onclick = loginToApp; 
-
+viewTicketBtn.addEventListener("click", viewTicket);
 
 async function loginToApp(){
   let user = {
@@ -22,7 +35,9 @@ async function loginToApp(){
 
   if(response.status===200){
     let data = await response.json();
-    document.getElementById("modal-dialog").innerHTML = '';
+    document.getElementById("login").innerHTML = '';
+    //sessionStorage.setItem
+    emplyeesection.style.display="block";
     console.log(data);
     
   }
@@ -35,4 +50,35 @@ async function loginToApp(){
 }
 
 
+// creating view tickets
 
+async function viewTicket(){
+  let response = await fetch(URL+"reim", {credentials:"include"});
+
+  if(response.status === 200){
+    let data2 = await response.json();
+    populateReimTable(data2);
+  }else{
+    console.log("Need to find out the issue");
+  }
+
+}
+function populateReimTable(data2){
+  let tbody = document.getElementById("vt");
+
+  tbody.innerHTML="";
+console.log(data2);
+  for(let reim of data2){
+    let row = document.createElement("tr");
+    console.log(reim);
+    for(let cell in reim){
+      let td = document.createElement("td");
+     
+      td.innerText = reim[cell];
+     
+      row.appendChild(td);
+    
+    tbody.appendChild(row);
+  }
+}
+}

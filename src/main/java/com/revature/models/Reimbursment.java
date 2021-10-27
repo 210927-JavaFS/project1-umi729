@@ -1,6 +1,7 @@
 package com.revature.models;
 
 
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -32,7 +34,8 @@ public class Reimbursment {
 	
 	private String description;
 	
-	private String copyOfReceipt;
+	@Lob
+	private byte[] fileimage;
 	
 	private int reciptNo;
 	
@@ -52,14 +55,14 @@ public class Reimbursment {
 
 
 	public Reimbursment(int rid, double amount, Date dateOfSubmit, Date dateOfResolve, String description,
-			String copyOfReceipt, int reciptNo, String rtype, String rstatus, UserRoles role, UserClass usr) {
+			byte[] fileimage, int reciptNo, String rtype, String rstatus, UserRoles role, UserClass usr) {
 		super();
 		this.rid = rid;
 		this.amount = amount;
 		this.dateOfSubmit = dateOfSubmit;
 		this.dateOfResolve = dateOfResolve;
 		this.description = description;
-		this.copyOfReceipt = copyOfReceipt;
+		this.fileimage = fileimage;
 		this.reciptNo = reciptNo;
 		this.rtype = rtype;
 		this.rstatus = rstatus;
@@ -68,14 +71,14 @@ public class Reimbursment {
 	}
 
 
-	public Reimbursment(double amount, Date dateOfSubmit, Date dateOfResolve, String description, String copyOfReceipt,
+	public Reimbursment(double amount, Date dateOfSubmit, Date dateOfResolve, String description, byte[] fileimage,
 			int reciptNo, String rtype, String rstatus, UserRoles role, UserClass usr) {
 		super();
 		this.amount = amount;
 		this.dateOfSubmit = dateOfSubmit;
 		this.dateOfResolve = dateOfResolve;
 		this.description = description;
-		this.copyOfReceipt = copyOfReceipt;
+		this.fileimage = fileimage;
 		this.reciptNo = reciptNo;
 		this.rtype = rtype;
 		this.rstatus = rstatus;
@@ -84,100 +87,48 @@ public class Reimbursment {
 	}
 
 
-	public Reimbursment(double amount, String description, String copyOfReceipt, int reciptNo, String rtype,
-			String rstatus) {
+	public Reimbursment(double amount, Date dateOfSubmit, Date dateOfResolve, String description, byte[] fileimage,
+			int reciptNo, String rtype, String rstatus) {
 		super();
 		this.amount = amount;
+		this.dateOfSubmit = dateOfSubmit;
+		this.dateOfResolve = dateOfResolve;
 		this.description = description;
-		this.copyOfReceipt = copyOfReceipt;
+		this.fileimage = fileimage;
 		this.reciptNo = reciptNo;
 		this.rtype = rtype;
 		this.rstatus = rstatus;
 	}
 
 
+	public Reimbursment(double amount, String description, byte[] fileimage, int reciptNo, String rtype,
+			String rstatus) {
+		super();
+		this.amount = amount;
+		this.description = description;
+		this.fileimage = fileimage;
+		this.reciptNo = reciptNo;
+		this.rtype = rtype;
+		this.rstatus = rstatus;
+	}
+
+
+	public Reimbursment(double amount, String description, byte[] fileimage, int reciptNo, String rtype, String rstatus,
+			UserRoles role, UserClass usr) {
+		super();
+		this.amount = amount;
+		this.description = description;
+		this.fileimage = fileimage;
+		this.reciptNo = reciptNo;
+		this.rtype = rtype;
+		this.rstatus = rstatus;
+		this.role = role;
+		this.usr = usr;
+	}
+
+
 	public Reimbursment() {
 		super();
-	}
-
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(amount);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((copyOfReceipt == null) ? 0 : copyOfReceipt.hashCode());
-		result = prime * result + ((dateOfResolve == null) ? 0 : dateOfResolve.hashCode());
-		result = prime * result + ((dateOfSubmit == null) ? 0 : dateOfSubmit.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + reciptNo;
-		result = prime * result + rid;
-		result = prime * result + ((role == null) ? 0 : role.hashCode());
-		result = prime * result + ((rstatus == null) ? 0 : rstatus.hashCode());
-		result = prime * result + ((rtype == null) ? 0 : rtype.hashCode());
-		result = prime * result + ((usr == null) ? 0 : usr.hashCode());
-		return result;
-	}
-
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Reimbursment other = (Reimbursment) obj;
-		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
-			return false;
-		if (copyOfReceipt == null) {
-			if (other.copyOfReceipt != null)
-				return false;
-		} else if (!copyOfReceipt.equals(other.copyOfReceipt))
-			return false;
-		if (dateOfResolve == null) {
-			if (other.dateOfResolve != null)
-				return false;
-		} else if (!dateOfResolve.equals(other.dateOfResolve))
-			return false;
-		if (dateOfSubmit == null) {
-			if (other.dateOfSubmit != null)
-				return false;
-		} else if (!dateOfSubmit.equals(other.dateOfSubmit))
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (reciptNo != other.reciptNo)
-			return false;
-		if (rid != other.rid)
-			return false;
-		if (role == null) {
-			if (other.role != null)
-				return false;
-		} else if (!role.equals(other.role))
-			return false;
-		if (rstatus == null) {
-			if (other.rstatus != null)
-				return false;
-		} else if (!rstatus.equals(other.rstatus))
-			return false;
-		if (rtype == null) {
-			if (other.rtype != null)
-				return false;
-		} else if (!rtype.equals(other.rtype))
-			return false;
-		if (usr == null) {
-			if (other.usr != null)
-				return false;
-		} else if (!usr.equals(other.usr))
-			return false;
-		return true;
 	}
 
 
@@ -231,13 +182,13 @@ public class Reimbursment {
 	}
 
 
-	public String getCopyOfReceipt() {
-		return copyOfReceipt;
+	public byte[] getFileimage() {
+		return fileimage;
 	}
 
 
-	public void setCopyOfReceipt(String copyOfReceipt) {
-		this.copyOfReceipt = copyOfReceipt;
+	public void setFileimage(byte[] fileimage) {
+		this.fileimage = fileimage;
 	}
 
 
@@ -292,12 +243,91 @@ public class Reimbursment {
 
 
 	@Override
-	public String toString() {
-		return "Reimbursment [rid=" + rid + ", amount=" + amount + ", dateOfSubmit=" + dateOfSubmit + ", dateOfResolve="
-				+ dateOfResolve + ", description=" + description + ", copyOfReceipt=" + copyOfReceipt + ", reciptNo="
-				+ reciptNo + ", rtype=" + rtype + ", rstatus=" + rstatus + ", role=" + role + ", usr=" + usr + "]";
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(amount);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((dateOfResolve == null) ? 0 : dateOfResolve.hashCode());
+		result = prime * result + ((dateOfSubmit == null) ? 0 : dateOfSubmit.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + Arrays.hashCode(fileimage);
+		result = prime * result + reciptNo;
+		result = prime * result + rid;
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + ((rstatus == null) ? 0 : rstatus.hashCode());
+		result = prime * result + ((rtype == null) ? 0 : rtype.hashCode());
+		result = prime * result + ((usr == null) ? 0 : usr.hashCode());
+		return result;
 	}
 
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Reimbursment other = (Reimbursment) obj;
+		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
+			return false;
+		if (dateOfResolve == null) {
+			if (other.dateOfResolve != null)
+				return false;
+		} else if (!dateOfResolve.equals(other.dateOfResolve))
+			return false;
+		if (dateOfSubmit == null) {
+			if (other.dateOfSubmit != null)
+				return false;
+		} else if (!dateOfSubmit.equals(other.dateOfSubmit))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (!Arrays.equals(fileimage, other.fileimage))
+			return false;
+		if (reciptNo != other.reciptNo)
+			return false;
+		if (rid != other.rid)
+			return false;
+		if (role == null) {
+			if (other.role != null)
+				return false;
+		} else if (!role.equals(other.role))
+			return false;
+		if (rstatus == null) {
+			if (other.rstatus != null)
+				return false;
+		} else if (!rstatus.equals(other.rstatus))
+			return false;
+		if (rtype == null) {
+			if (other.rtype != null)
+				return false;
+		} else if (!rtype.equals(other.rtype))
+			return false;
+		if (usr == null) {
+			if (other.usr != null)
+				return false;
+		} else if (!usr.equals(other.usr))
+			return false;
+		return true;
+	}
+
+
+	@Override
+	public String toString() {
+		return "Reimbursment [rid=" + rid + ", amount=" + amount + ", dateOfSubmit=" + dateOfSubmit + ", dateOfResolve="
+				+ dateOfResolve + ", description=" + description + ", fileimage=" + Arrays.toString(fileimage)
+				+ ", reciptNo=" + reciptNo + ", rtype=" + rtype + ", rstatus=" + rstatus + ", role=" + role + ", usr="
+				+ usr + "]";
+	}
+
+	
 
 	
 }

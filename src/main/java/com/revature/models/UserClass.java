@@ -104,12 +104,12 @@ public class UserClass {
 		super();
 	}
 
-	@Override
-	public String toString() {
-		
-		return "UserClass [userId=" + userId + ", username=" + username + ", password=" + password + ", fname=" + fname
-				+ ", lname=" + lname + ", email=" + email + ", role=" + role + ", rec=" + rec + "]";
-	}
+//	@Override
+//	public String toString() {
+//		
+//		return "UserClass [userId=" + userId + ", username=" + username + ", password=" + password + ", fname=" + fname
+//				+ ", lname=" + lname + ", email=" + email + ", role=" + role + ", rec=" + rec + "]";
+//	}
 
 	@Override
 	public int hashCode() {
