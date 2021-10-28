@@ -54,19 +54,22 @@
         <section id="emplyeesection">
             <div class="container-fluid">
                 <header>
-                    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-warning ">
                         <div class="container-fluid">
-                          <a class="navbar-brand bg-primary " href="">Reimbursement Management System</a>
+                          <a class="navbar-brand " href="">Reimbursement Management System</a>
                           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                           </button>
                           <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                             <ul class="navbar-nav">
-                              <li class="nav-item">
-                                <button class="nav-link active btn btn-outline-primary"" aria-current="page" id="viewAllTicket" >View My Tickets</button>
+                              <li class="nav-item mx-2">
+                                <button class="nav-link btn btn-outline-primary"" aria-current="page" id="viewAllTicket" >View My Tickets</button>
                               </li>
-                              <li class="nav-item">
+                              <li class="nav-item mx-2">
                                 <button class="nav-link btn btn-outline-primary" id="newTicket" >Submit New Ticket</button>
+                              </li>
+                              <li class="nav-item ">
+                                <button class="nav-link btn btn-outline-primary" id="logout" >Logout</button>
                               </li>
                               
                             </ul>
@@ -75,7 +78,10 @@
                       </nav>
                 </header>
                 <main id="viewtickets">
-                    <table class="table table-striped">
+                    <table class="table table-success table-striped border border-1">
+                        <thead id="vh">
+
+                        </thead>
                        <tbody id="vt">
 
                         </tbody>
