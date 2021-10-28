@@ -48,7 +48,7 @@ public class Reimbursment {
 	 private int approverId;
 	
 	@JoinColumn(name="userId")
-	@ManyToOne( fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne( fetch=FetchType.EAGER)
 	 private UserClass usr;
 
 	public Reimbursment(int rid, double amount, Date dateOfSubmit, Date dateOfResolve, String description,

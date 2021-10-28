@@ -38,7 +38,7 @@ public class UserClass {
 	@ManyToOne( fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	 private UserRoles role;
 
-	@OneToMany(mappedBy = "usr", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "usr", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JsonIgnore
 	private List<Reimbursment> rec;
 
