@@ -12,7 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class UserClass {
@@ -30,13 +31,15 @@ public class UserClass {
 	private String lname;
 	
 	@Column(unique = true)
+
 	private String email;
 	
 	@JoinColumn(name="roleId")
-	@ManyToOne( fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@ManyToOne( fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	 private UserRoles role;
 
-	@OneToMany(mappedBy = "usr", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usr", fetch = FetchType.EAGER)
+	@JsonIgnore
 	private List<Reimbursment> rec;
 
 	
@@ -48,6 +51,18 @@ public class UserClass {
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
+	}
+
+	public UserClass(int userId, String username, String password, String fname, String lname, String email,
+			UserRoles role) {
+		super();
+		this.userId = userId;
+		this.username = username;
+		this.password = password;
+		this.fname = fname;
+		this.lname = lname;
+		this.email = email;
+		this.role = role;
 	}
 
 	public UserClass(int userId, String username, String password, String fname, String lname, String email,

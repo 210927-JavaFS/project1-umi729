@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.internal.build.AllowSysOut;
+
 import com.revature.models.UserClass;
 import com.revature.services.UserClassSer;
 
@@ -16,9 +18,11 @@ public class UserController implements Controller {
 
 	
 	private Handler loginAttempt = (ctx) -> {
-	
+		System.out.print("\n\n\n\n\n\n");
+		System.out.print(ctx.bodyAsClass(UserClass.class));
 		UserClass uc = ctx.bodyAsClass(UserClass.class);	
 		UserClass logback =userSer.login(uc);
+		System.out.print("\n\n\n\n\n\n" + logback);
 		if( logback !=null) {
 			
 			ctx.req.getSession(); 

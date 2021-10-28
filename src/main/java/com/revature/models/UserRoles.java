@@ -9,9 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class UserRoles {
@@ -22,23 +22,23 @@ public class UserRoles {
 	 @Column(nullable = false, unique = true)
 	private String role;
 	
-	 @OneToMany(mappedBy = "role", fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
+	 @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+	 @JsonIgnore
 	private List<UserClass> uc;
 	 
-	@OneToMany(mappedBy = "role", fetch = FetchType.EAGER,  cascade = CascadeType.ALL)
-	private List<Reimbursment> rec;
+	
 
 	public UserRoles(int roleId, String role, List<Reimbursment> rec) {
 		super();
 		this.roleId = roleId;
 		this.role = role;
-		this.rec = rec;
+		
 	}
 
 	public UserRoles(String role, List<Reimbursment> rec) {
 		super();
 		this.role = role;
-		this.rec = rec;
+		
 	}
 
 	public UserRoles(String role) {
@@ -49,46 +49,6 @@ public class UserRoles {
 	public UserRoles() {
 		super();
 	}
-
-	@Override
-	public String toString() {
-		return "UserRoles [roleId=" + roleId + ", role=" + role + ", rec=" + rec + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((rec == null) ? 0 : rec.hashCode());
-		result = prime * result + ((role == null) ? 0 : role.hashCode());
-		result = prime * result + roleId;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UserRoles other = (UserRoles) obj;
-		if (rec == null) {
-			if (other.rec != null)
-				return false;
-		} else if (!rec.equals(other.rec))
-			return false;
-		if (role == null) {
-			if (other.role != null)
-				return false;
-		} else if (!role.equals(other.role))
-			return false;
-		if (roleId != other.roleId)
-			return false;
-		return true;
-	}
-
 	public int getRoleId() {
 		return roleId;
 	}
@@ -105,13 +65,54 @@ public class UserRoles {
 		this.role = role;
 	}
 
-	public List<Reimbursment> getRec() {
-		return rec;
+	public List<UserClass> getUc() {
+		return uc;
 	}
 
-	public void setRec(List<Reimbursment> rec) {
-		this.rec = rec;
+	public void setUc(List<UserClass> uc) {
+		this.uc = uc;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + roleId;
+		result = prime * result + ((uc == null) ? 0 : uc.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UserRoles other = (UserRoles) obj;
+		if (role == null) {
+			if (other.role != null)
+				return false;
+		} else if (!role.equals(other.role))
+			return false;
+		if (roleId != other.roleId)
+			return false;
+		if (uc == null) {
+			if (other.uc != null)
+				return false;
+		} else if (!uc.equals(other.uc))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "UserRoles [roleId=" + roleId + ", role=" + role + ", uc=" + uc + "]";
+	}
+
+	
 
 	
 }

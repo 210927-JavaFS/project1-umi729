@@ -53,13 +53,13 @@ function readFile(evt) {
 				var binaryImg = convertDataURIToBinary(base64Img);
 				var blob = new Blob([binaryImg], {type: f.type});
 				blobURL = window.URL.createObjectURL(blob);
-				fileName = f.name;
-				document.getElementById('nameImg').value = fileName;
+				
 				document.getElementById('typeImg').value = f.type;
 				document.getElementById('sizeImg').value = f.size;
 				document.getElementById('base64Url').value = base64Img;
 				document.getElementById('blobUrl').value = blobURL;
-				document.getElementById('base64Img').src = base64Img;
+				
+				
 				document.getElementById('blobImg').src = blobURL;
 				document.getElementById('binaryImg').innerHTML = JSON.stringify(binaryImg, null, 2);
 			}
@@ -72,17 +72,7 @@ function readFile(evt) {
     }
 }
 
-var downloadFile = (function () {
-    var a = document.createElement("a");
-    document.body.appendChild(a);
-    a.style = "display: none";
-    return function () {
-        a.href = blobURL;
-        a.download = fileName;
-        a.click();
-        window.URL.revokeObjectURL(blobURL);
-    };
-}());
+
 
 document.getElementById('inputImg').addEventListener('change', readFile, false);
 document.getElementById('saveImg').addEventListener('click', downloadFile, false);

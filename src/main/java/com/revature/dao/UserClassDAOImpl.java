@@ -55,7 +55,7 @@ public class UserClassDAOImpl implements UserClassDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (transaction != null) {
-				transaction.rollback();
+				//transaction.rollback();
 			}
 			return null;
 		}
@@ -68,8 +68,11 @@ public class UserClassDAOImpl implements UserClassDAO {
 		try {
 			Session session = HibernateUtil.getSession();
 			 tx = session.beginTransaction();
-			session.save(usr);
+			
+			 session.save(usr);
+			// session.clear();
 			tx.commit();
+			
 			HibernateUtil.closeSession();
 			return true;
 		} catch (HibernateException e) {
@@ -145,7 +148,7 @@ public class UserClassDAOImpl implements UserClassDAO {
 				}
 			} else {
 				if (tx != null) {
-					tx.rollback();
+					//tx.rollback();
 					return null;
 				}
 				
@@ -156,7 +159,7 @@ public class UserClassDAOImpl implements UserClassDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (tx != null) {
-				tx.rollback();
+				//tx.rollback();
 			}
 			return null;
 		}

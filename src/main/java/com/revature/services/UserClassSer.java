@@ -45,7 +45,7 @@ public class UserClassSer {
 	}
 
 	public boolean addUser(UserClass rec) {
-		rec.setRole(getUserRoles());
+	
 		rec.setPassword(ae.encrypt(rec.getPassword()));
 	
 		return uc.insert(rec);

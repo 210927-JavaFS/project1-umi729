@@ -56,7 +56,7 @@
                 <header>
                     <nav class="navbar navbar-expand-lg navbar-light bg-warning ">
                         <div class="container-fluid">
-                          <a class="navbar-brand " href="">Reimbursement Management System</a>
+                          <a class="navbar-brand " href="">Expense Reimbursement System (ERS)</a>
                           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                           </button>
@@ -88,7 +88,38 @@
                       </table>
                 </main>
                 <main id="submittickets">
-
+                        <div class="container mx-auto col-4">
+                           
+                            <form id="addReim">
+                              <div class="mb-3">
+                                <label for="amount" class="form-label">Total Amount</label>
+                                <input type="text" class="form-control" required id="amount" aria-describedby="totalAmountRequesting">
+                              </div>
+                              <div class="mb-3">
+                                <label for="textarea1" class="form-label">Description</label>
+                                <textarea  class="form-control" id="textarea1" rows="3"></textarea>
+                              </div>
+                              <label for="typeofreim" class="form-label">Type of Expense</label>
+                              
+                              <select class="form-select form-select-sm form-control" required aria-label=".form-select-sm example" id="typeofreim">
+                                <option disabled selected>Select</option>
+                                <option value="FOOD">FOOD</option>
+                                <option value="LODGING">LODGING</option>
+                                <option value="TRAVEL">TRAVEL</option>
+                                <option value="OTHER">OTHER</option>
+                              </select>
+                              <div class="mb-3 my-1">
+                                <label for="receiptNo" class="form-label">Receipt No</label>
+                                <input type="text" class="form-control" id="receiptNo" aria-describedby="Receiptnumber">
+                              </div>
+                              <div class="input-group mb-3">
+                                <input type="file" class="form-control" id="inputGroupFile02">
+                                <label class="input-group-text" for="inputGroupFile02">Upload Receipt</label>
+                              </div>
+                            
+                            </form>
+                            <button  class="btn btn-warning" id="btnAdd">Submit</button>
+                        </div>
                 </main>
                 <footer>
 
