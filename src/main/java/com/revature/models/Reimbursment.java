@@ -4,7 +4,6 @@ package com.revature.models;
 import java.util.Arrays;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,11 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table
 public class Reimbursment {
@@ -42,7 +40,7 @@ public class Reimbursment {
 	private int reciptNo;
 	
 	private String rtype;
-	
+	@OrderBy("rid ASC, rstatus DESC")
 	private String rstatus;
 	
 	 private int approverId;

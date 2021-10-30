@@ -135,6 +135,7 @@ public class UserClassDAOImpl implements UserClassDAO {
 			Root<UserClass> root = query.from(UserClass.class);
 			query.select(root).where(builder.equal(root.get("username"), usr.getUsername()));
 			Query<UserClass> q = session.createQuery(query);
+			System.out.println(usr.getUsername());
 			UserClass uc = q.getSingleResult();
 
 			if (usr.getUsername().equals(uc.getUsername())) {

@@ -78,6 +78,16 @@
                       </nav>
                 </header>
                 <main id="viewtickets">
+                  <div class="flex-row align-items-end justify-content-end  mt-2 mb-2" id="filt">
+                    <label for="filterby">Filter By</label> 
+                    <select id="filterby" name="filterby" >
+                       <option value="All">All</option>
+                       <option value="Pending">Pending</option>
+                       <option value="Approved">Approved</option>
+                       <option value="Denied">Denied</option>
+                     </select>
+                     <button class="btn-warning btn-sm"  id="btnGo">Go</button>
+                    </div>
                     <table class="table table-success table-striped border border-1">
                         <thead id="vh">
 
@@ -99,7 +109,7 @@
                 </main>
                 <main id="submittickets">
                         <div class="container mx-auto col-4">
-                           
+                         
                             <form id="addReim">
                               <div class="mb-3">
                                 <label for="amount" class="form-label">Total Amount</label>

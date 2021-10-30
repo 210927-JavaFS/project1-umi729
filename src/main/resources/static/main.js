@@ -26,11 +26,16 @@ let valu = document.getElementById("apText");
 let approve = document.getElementById("Approve");
 let deny = document.getElementById("Deny");
 
+//filter
+let viewFilter = document.getElementById("filt");
+let filterby = document.getElementById("filterby");
+let goFilterBtn = document.getElementById("btnGo");
 //=============================== view toggle ======================
 submitMenuBtn.onclick = () => {
   //console.log("in sec");
   viewSubmitSec.style.display = "block";
   formApp.style.display = "none";
+  viewFilter.style.display = "none";
   tbody.innerHTML = "";
   thead.innerHTML = "";
 };
@@ -42,13 +47,15 @@ window.onload = () => {
       document.getElementById("login").innerHTML = "";
       emplyeesection.style.display = "block";
       formApp.style.display = "none";
-    }else{
+    } else {
       emplyeesection.style.display = "none";
       formApp.style.display = "none";
+      viewFilter.style.display = "none";
     }
   } else {
     emplyeesection.style.display = "none";
     formApp.style.display = "none";
+    viewFilter.style.display = "none";
   }
 };
 
@@ -113,18 +120,50 @@ async function loginToApp() {
 }
 
 // ===================creating view tickets=====================================
+
+goFilterBtn.onclick = () => {
+  if (filterby.value == "All") {
+    tbody.innerHTML = "";
+    thead.innerHTML = "";
+    viewTicket();
+  } else {
+    tbody.innerHTML = "";
+    thead.innerHTML = "";
+    viewTicketFilter(filterby.value);
+  }
+};
+
 viewTicketBtn.onclick = () => {
   viewSubmitSec.style.display = "none";
   viewTicket();
   if (sessionStorage.getItem("userId") != 1) {
     formApp.style.display = "none";
+    viewFilter.style.display = "flex";
   } else {
     formApp.style.display = "flex";
+    viewFilter.style.display = "flex";
   }
 };
 
 async function viewTicket() {
   let response = await fetch(URL + "reim", { credentials: "include" });
+
+  if (response.status === 200) {
+    let data2 = await response.json();
+    if (sessionStorage.getItem("userId") == 1) {
+      populateReimTable(data2);
+    } else {
+      populateReimTableforEmplye(data2);
+    }
+  } else {
+    console.log("Something went wrong!!!");
+  }
+}
+//===========================filtered=========================
+async function viewTicketFilter(filter) {
+  let response = await fetch(URL + "status/" + filter, {
+    credentials: "include",
+  });
 
   if (response.status === 200) {
     let data2 = await response.json();
@@ -194,16 +233,17 @@ function populateReimTable(data2) {
 function populateReimTableforEmplye(data2) {
   let row1 = document.createElement("tr");
   let th = [];
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 8; i++) {
     th[i] = document.createElement("th");
   }
   th[0].innerText = "Amount Requested";
   th[1].innerText = "Date of Submission";
-  th[2].innerText = "Description";
-  th[3].innerText = "Receipt No";
-  th[4].innerText = "Type of Expense";
-  th[5].innerText = "Status";
-  th[6].innerText = "Submitted by";
+  th[2].innerText = "Date of Resolved";
+  th[3].innerText = "Description";
+  th[4].innerText = "Receipt No";
+  th[5].innerText = "Type of Expense";
+  th[6].innerText = "Status";
+  th[7].innerText = "Submitted by";
   for (let i = 0; i < th.length; i++) {
     row1.appendChild(th[i]);
   }
@@ -221,17 +261,30 @@ function populateReimTableforEmplye(data2) {
         (ds.getDate() > 9 ? ds.getDate() : "0" + ds.getDate()) +
         "/" +
         ds.getFullYear();
+      let rdate = null;
+      if (reim.dateOfResolve != null) {
+        const dsr = new Date(reim.dateOfResolve);
+        rdate =
+          (dsr.getMonth() > 8
+            ? dsr.getMonth() + 1
+            : "0" + (dsr.getMonth() + 1)) +
+          "/" +
+          (dsr.getDate() > 9 ? dsr.getDate() : "0" + dsr.getDate()) +
+          "/" +
+          dsr.getFullYear();
+      }
       let td = [];
-      for (let i = 0; i < 7; i++) {
+      for (let i = 0; i < 8; i++) {
         td[i] = document.createElement("td");
       }
       td[0].innerText = reim.amount;
       td[1].innerText = fdate;
-      td[2].innerText = reim.description;
-      td[3].innerText = reim.reciptNo;
-      td[4].innerText = reim.rtype;
-      td[5].innerText = reim.rstatus;
-      td[6].innerText = reim.usr.fname + " " + reim.usr.lname;
+      td[2].innerText = rdate;
+      td[3].innerText = reim.description;
+      td[4].innerText = reim.reciptNo;
+      td[5].innerText = reim.rtype;
+      td[6].innerText = reim.rstatus;
+      td[7].innerText = reim.usr.fname + " " + reim.usr.lname;
       for (let i = 0; i < td.length; i++) {
         row.appendChild(td[i]);
       }

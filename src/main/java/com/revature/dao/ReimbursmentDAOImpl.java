@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import com.revature.models.Reimbursment;
 import com.revature.utils.HibernateUtil;
 import java.util.Collections;
+import java.util.Date;
 
 public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 	private static Logger Log = LoggerFactory.getLogger(ReimbursmentDAOImpl.class);
@@ -46,8 +47,11 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 			CriteriaQuery<Reimbursment> query = builder.createQuery(Reimbursment.class);
 			Root<Reimbursment> root = query.from(Reimbursment.class);
 			query.select(root).where(builder.equal(root.get("rstatus"), status));
+			
 			Query<Reimbursment> q = session.createQuery(query);
 			List<Reimbursment> uc = q.getResultList();
+			System.out.println("\n\n\n\nhello\n\n\n\n\n");
+			System.out.println(status);
 			tx.commit();
 			return uc;
 			
@@ -92,10 +96,12 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 		Log.debug("ReimbursmentDAOImpl >  updateRec()");
 		Transaction tx = null;
 		try {
+			Date date=new Date();
 			Session session = HibernateUtil.getSession();
 			tx = session.beginTransaction();
 			Reimbursment reimUp = session.get(Reimbursment.class, id); 
 			reimUp.setRstatus(status);
+			reimUp.setDateOfResolve(date);
 			session.merge(reimUp);
 			tx.commit();
 			HibernateUtil.closeSession();
