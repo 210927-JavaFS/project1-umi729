@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -34,13 +35,9 @@ public class ReimbursmentSer {
 		}
 	}
 
-	public Reimbursment getReimByStatus(String status) {
-		Reimbursment rec = rd.filterByStatus(status);
-		if (rec != null) {
-			return rec;
-		} else {
-			return new Reimbursment();
-		}
+	public List<Reimbursment> getReimByStatus(String status) {
+		return rd.filterByStatus(status);
+		
 	}
 
 	public boolean addReim(Reimbursment rec) {
@@ -49,8 +46,8 @@ public class ReimbursmentSer {
 		return rd.addNewRec(rec);
 	}
 
-	public boolean updateRem(Reimbursment rec) {
-		return rd.updateRec(rec);
+	public boolean updateRem(int id, String status) {
+		return rd.updateRec(id, status);
 	}
 
 	public boolean deleteReim(int id) {

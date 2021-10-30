@@ -8,9 +8,9 @@ import com.revature.models.UserClass;
 public interface ReimbursmentDAO {
 	List<Reimbursment> findAllRec();
 	Reimbursment findById(int id);
-	Reimbursment filterByStatus(String status);
+	List<Reimbursment> filterByStatus(String status);
 	boolean addNewRec(Reimbursment rec);
-	boolean updateRec(Reimbursment rec);
+	boolean updateRec(int id, String status);
 	public boolean delete(Reimbursment rec);
 	
 }

@@ -130,13 +130,10 @@ public class UserClassDAOImpl implements UserClassDAO {
 			AES256 ae = new AES256();
 			Session session = HibernateUtil.getSession();
 			tx = session.beginTransaction();
-
 			CriteriaBuilder builder = session.getCriteriaBuilder();
 			CriteriaQuery<UserClass> query = builder.createQuery(UserClass.class);
 			Root<UserClass> root = query.from(UserClass.class);
-			//query.multiselect(root.get("username"), root.get("password"))
 			query.select(root).where(builder.equal(root.get("username"), usr.getUsername()));
-
 			Query<UserClass> q = session.createQuery(query);
 			UserClass uc = q.getSingleResult();
 
@@ -148,7 +145,7 @@ public class UserClassDAOImpl implements UserClassDAO {
 				}
 			} else {
 				if (tx != null) {
-					//tx.rollback();
+					tx.rollback();
 					return null;
 				}
 				
@@ -159,7 +156,7 @@ public class UserClassDAOImpl implements UserClassDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 			if (tx != null) {
-				//tx.rollback();
+				tx.rollback();
 			}
 			return null;
 		}

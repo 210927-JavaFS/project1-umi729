@@ -3,6 +3,7 @@ package com.revature.controllers;
 import java.util.List;
 
 import com.revature.models.Reimbursment;
+import com.revature.models.Rstatus;
 import com.revature.services.ReimbursmentSer;
 
 import io.javalin.Javalin;
@@ -39,6 +40,24 @@ public class ReimController implements Controller {
 		}
 	};
 
+	public Handler getRemByStatus = (ctx) -> {
+		if (ctx.req.getSession(false) != null) {
+			try {
+				String idString = ctx.pathParam("astatus");
+				
+				List<Reimbursment> reim = remSer.getReimByStatus(idString);
+				ctx.json(reim);
+				ctx.status(200);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				ctx.status(406);
+			}
+		} else {
+			ctx.status(401);
+		}
+	};
+
+	
 	public Handler addReim = (ctx) -> {
 		if (ctx.req.getSession(false) != null) {
 			Reimbursment reim = ctx.bodyAsClass(Reimbursment.class);
@@ -54,9 +73,9 @@ public class ReimController implements Controller {
 
 	public Handler updateStatus = (ctx) -> {
 		if (ctx.req.getSession(false) != null) {
-			Reimbursment reim = ctx.bodyAsClass(Reimbursment.class);
-			if (remSer.updateRem(reim)) {
-				ctx.status(200);
+			Rstatus status = ctx.bodyAsClass(Rstatus.class);
+			if (remSer.updateRem(status.getId(), status.getStatus())) {
+				ctx.status(204);
 			} else {
 				ctx.status(400);
 			}
@@ -88,6 +107,7 @@ public class ReimController implements Controller {
 	public void addRoutes(Javalin app) {
 		app.get("/reim", this.getAllReim);
 		app.get("/reim/:reim", this.getRemById);
+		app.get("/reim/:astatus", this.getRemByStatus);
 		app.post("/reim", this.addReim);
 		app.put("/reim", this.updateStatus);
 		app.delete("/reim/:reim", this.deleteReim);

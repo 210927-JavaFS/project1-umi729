@@ -1,36 +1,58 @@
 "use strict";
 const URL = "http://localhost:8080/";
-// variable declariation 
+// variable declariation
 let emplyeesection = document.getElementById("emplyeesection");
 let rmCheck = document.getElementById("rememberMe");
 let loginButton = document.getElementById("loginButton");
 let addNewBtn = document.getElementById("btnAdd");
+let viewticketsection = document.getElementById("viewtickets");
 let viewTicketBtn = document.getElementById("viewAllTicket");
+let submitMenuBtn = document.getElementById("newTicket");
 let usr = document.getElementById("username");
 let pass = document.getElementById("password");
-
+let tbody = document.getElementById("vt");
+let thead = document.getElementById("vh");
+let formView = document.getElementById("addReim");
+let viewSubmitSec = document.getElementById("submittickets");
 // DOM for form to add in database
-let amountf=document.getElementById("amount");
-//amountf=Number(amountf.value);
-let descriptionf=document.getElementById("textarea1");
-let reciptNof=document.getElementById("receiptNo");
-//reciptNof=Number(reciptNof.value);
-let rtypef=document.getElementById("typeofreim");
-let blobURL;
-let binaryImg;
-let fileimagef=document.getElementById("inputGroupFile02");
-fileimagef.addEventListener('change', readFile, false);
+let amountf = document.getElementById("amount");
+let descriptionf = document.getElementById("textarea1");
+let reciptNof = document.getElementById("receiptNo");
+let rtypef = document.getElementById("typeofreim");
+let formApp = document.getElementById("forAdmin");
 
+// approve / denied variables
+let valu = document.getElementById("apText");
+let approve = document.getElementById("Approve");
+let deny = document.getElementById("Deny");
+
+//=============================== view toggle ======================
+submitMenuBtn.onclick = () => {
+  //console.log("in sec");
+  viewSubmitSec.style.display = "block";
+  formApp.style.display = "none";
+  tbody.innerHTML = "";
+  thead.innerHTML = "";
+};
+
+// ================ on load====================
 window.onload = () => {
   if (isNaN(sessionStorage.getItem("role"))) {
-    document.getElementById("login").innerHTML = "";
-    emplyeesection.style.display = "block";
+    if (sessionStorage.getItem("role") < 1) {
+      document.getElementById("login").innerHTML = "";
+      emplyeesection.style.display = "block";
+      formApp.style.display = "none";
+    }else{
+      emplyeesection.style.display = "none";
+      formApp.style.display = "none";
+    }
   } else {
-    emplyeesection.style.display = "block";
-    //emplyeesection.style.display = "none";
+    emplyeesection.style.display = "none";
+    formApp.style.display = "none";
   }
 };
-// check is local storage is set to save username and password
+
+//========== check is local storage is set to save username and password==========
 if (localStorage.checkbox && localStorage.checkbox !== "") {
   rmCheck.setAttribute("checked", "checked");
   usr.value = localStorage.username;
@@ -40,7 +62,7 @@ if (localStorage.checkbox && localStorage.checkbox !== "") {
   usr.value = "";
   pass.value = "";
 }
-
+// =============== remember me =================================================
 function lsRememberMe() {
   if (rmCheck.checked && usr.value !== "") {
     localStorage.username = usr.value;
@@ -52,17 +74,14 @@ function lsRememberMe() {
     localStorage.checkbox = "";
   }
 }
-
+//===================== login button======================
 loginButton.addEventListener("click", loginToApp);
-
-viewTicketBtn.addEventListener("click", viewTicket);
-
 async function loginToApp() {
   let user = {
     username: usr.value,
-    password: pass.value
+    password: pass.value,
   };
-  console.log(user);
+  //  console.log(user);
 
   let response = await fetch(URL + "login", {
     method: "POST",
@@ -72,12 +91,12 @@ async function loginToApp() {
   lsRememberMe();
   if (response.status === 200) {
     let data = await response.json();
-    console.log(data);
+    // console.log(data);
     document.getElementById("login").innerHTML = "";
     emplyeesection.style.display = "block";
 
     //creating session to keep login
-    
+
     sessionStorage.setItem("userId", data.userId);
     sessionStorage.setItem("username", data.username);
     sessionStorage.setItem("fname", data.fname);
@@ -93,21 +112,86 @@ async function loginToApp() {
   }
 }
 
-// creating view tickets
+// ===================creating view tickets=====================================
+viewTicketBtn.onclick = () => {
+  viewSubmitSec.style.display = "none";
+  viewTicket();
+  if (sessionStorage.getItem("userId") != 1) {
+    formApp.style.display = "none";
+  } else {
+    formApp.style.display = "flex";
+  }
+};
 
 async function viewTicket() {
   let response = await fetch(URL + "reim", { credentials: "include" });
 
   if (response.status === 200) {
     let data2 = await response.json();
-    populateReimTable(data2);
+    if (sessionStorage.getItem("userId") == 1) {
+      populateReimTable(data2);
+    } else {
+      populateReimTableforEmplye(data2);
+    }
   } else {
-    console.log("Need to find out the issue");
+    console.log("Something went wrong!!!");
   }
 }
+
+//============================= creating table to view reimburcements for Manager============
 function populateReimTable(data2) {
-  let tbody = document.getElementById("vt");
-  let thead = document.getElementById("vh");
+  let row1 = document.createElement("tr");
+  let th = [];
+  for (let i = 0; i < 8; i++) {
+    th[i] = document.createElement("th");
+  }
+  th[0].innerText = "Id No";
+  th[1].innerText = "Amount Requested";
+  th[2].innerText = "Date of Submission";
+  th[3].innerText = "Description";
+  th[4].innerText = "Receipt No";
+  th[5].innerHTML = "Submitted by";
+  th[6].innerText = "Type of Expense";
+  th[7].innerText = "Status";
+
+  for (let i = 0; i < th.length; i++) {
+    row1.appendChild(th[i]);
+  }
+  thead.appendChild(row1);
+  tbody.innerHTML = "";
+  for (let reim of data2) {
+    let row = document.createElement("tr");
+
+    //get either by name or by iterate
+    const ds = new Date(reim.dateOfSubmit);
+    let fdate =
+      (ds.getMonth() > 8 ? ds.getMonth() + 1 : "0" + (ds.getMonth() + 1)) +
+      "/" +
+      (ds.getDate() > 9 ? ds.getDate() : "0" + ds.getDate()) +
+      "/" +
+      ds.getFullYear();
+    let td = [];
+    for (let i = 0; i < 8; i++) {
+      td[i] = document.createElement("td");
+    }
+    td[0].innerText = reim.rid;
+    td[1].innerText = reim.amount;
+    td[2].innerText = fdate;
+    td[3].innerText = reim.description;
+    td[4].innerText = reim.reciptNo;
+    td[5].innerText = reim.usr.fname + " " + reim.usr.lname;
+    td[6].innerText = reim.rtype;
+    td[7].innerText = reim.rstatus;
+
+    for (let i = 0; i < td.length; i++) {
+      row.appendChild(td[i]);
+    }
+    tbody.appendChild(row);
+  }
+}
+
+//============================= creating table to view reimburcements for Employee============
+function populateReimTableforEmplye(data2) {
   let row1 = document.createElement("tr");
   let th = [];
   for (let i = 0; i < 7; i++) {
@@ -119,59 +203,54 @@ function populateReimTable(data2) {
   th[3].innerText = "Receipt No";
   th[4].innerText = "Type of Expense";
   th[5].innerText = "Status";
-  th[6].innerText = "Image of receipt";
+  th[6].innerText = "Submitted by";
   for (let i = 0; i < th.length; i++) {
     row1.appendChild(th[i]);
   }
   thead.appendChild(row1);
-
   tbody.innerHTML = "";
-
   for (let reim of data2) {
-
-    let row = document.createElement("tr");
-    let img = document.createElement("img");
-    //get either by name or by iterate
-    const ds = new Date(reim.dateOfSubmit);
-    let fdate =
-      (ds.getMonth() > 8 ? ds.getMonth() + 1 : "0" + (ds.getMonth() + 1)) +
-      "/" +
-      (ds.getDate() > 9 ? ds.getDate() : "0" + ds.getDate()) +
-      "/" +
-      ds.getFullYear();
-    let td = [];
-    for (let i = 0; i < 7; i++) {
-      td[i] = document.createElement("td");
+    //console.log(sessionStorage.getItem("userId"));
+    if (reim.usr.userId == sessionStorage.getItem("userId")) {
+      let row = document.createElement("tr");
+      //get either by name or by iterate
+      const ds = new Date(reim.dateOfSubmit);
+      let fdate =
+        (ds.getMonth() > 8 ? ds.getMonth() + 1 : "0" + (ds.getMonth() + 1)) +
+        "/" +
+        (ds.getDate() > 9 ? ds.getDate() : "0" + ds.getDate()) +
+        "/" +
+        ds.getFullYear();
+      let td = [];
+      for (let i = 0; i < 7; i++) {
+        td[i] = document.createElement("td");
+      }
+      td[0].innerText = reim.amount;
+      td[1].innerText = fdate;
+      td[2].innerText = reim.description;
+      td[3].innerText = reim.reciptNo;
+      td[4].innerText = reim.rtype;
+      td[5].innerText = reim.rstatus;
+      td[6].innerText = reim.usr.fname + " " + reim.usr.lname;
+      for (let i = 0; i < td.length; i++) {
+        row.appendChild(td[i]);
+      }
+      tbody.appendChild(row);
     }
-    td[0].innerText = reim.amount;
-    td[1].innerText = fdate;
-    td[2].innerText = reim.description;
-    td[3].innerText = reim.reciptNo;
-    td[4].innerText = reim.rtype;
-    td[5].innerText = reim.rstatus;
-    let blob = new Blob([reim.fileimage]);
-    blobURL = window.URL.createObjectURL(blob);
-    img.src=blobURL;
-    td[6].appendChild(img);
-      
-    
-    for (let i = 0; i < td.length; i++) {
-      row.appendChild(td[i]);
-    }
-    tbody.appendChild(row);
   }
 }
+
+//=============================== approve/deny=================================
+
+//============================log out==================================
 let logOutButton = document.getElementById("logout");
 logOutButton.addEventListener("click", () => {
   sessionStorage.clear();
   window.location.reload();
 });
+
+//==================== add reimburcement in table=======================
 addNewBtn.addEventListener("click", addReimFun);
-
-
-// add reimburcement in table
-
-
 async function addReimFun() {
   let addJson = {
     amount: amountf.value,
@@ -179,74 +258,57 @@ async function addReimFun() {
     reciptNo: reciptNof.value,
     rtype: rtypef.value,
     rstatus: "Pending",
-    fileimage: blobURL,
-    usr: { userId : sessionStorage.getItem("userId"),
-    username : sessionStorage.getItem("username"),
-  }
+    usr: {
+      userId: sessionStorage.getItem("userId"),
+      username: sessionStorage.getItem("username"),
+    },
   };
-  console.log(addJson);
+  // console.log(addJson);
   let response = await fetch(URL + "reim", {
     method: "POST",
     body: JSON.stringify(addJson),
     credentials: "include", //This will save the cookie when we receive it.
   });
 
-  if (response.status === 200) {
-    console.log("successful")
+  if (response.status === 201) {
+    //console.log("successful");
+    viewSubmitSec.style.display = "none";
+    viewTicket();
   } else {
     let para = document.createElement("p");
-   // para.setAttribute("style", "color:red");
-    //para.innerText = " FAILED";
-    //document.getElementsByClassName("modal-body")[0].appendChild(para);
+    para.setAttribute("style", "color:red");
+    para.innerText = " FAILED";
+    viewSubmitSec.appendChild(para);
   }
 }
 
+valu.value = "";
 
+approve.onclick = () => {
+  chStatus(valu.value, "Approved");
+};
+deny.onclick = () => {
+  chStatus(valu.value, "Denied");
+};
 
+async function chStatus(rid, stat) {
+  console.log(rid);
+  let status1 = {
+    id: rid,
+    status: stat,
+  };
 
-// Convert a base64 string into a binary Uint8 Array 
-// https://gist.github.com/borismus/1032746
-function convertDataURIToBinary(dataURI) {
-	let BASE64_MARKER = ';base64,';
-	let base64Index = dataURI.indexOf(BASE64_MARKER) + BASE64_MARKER.length;
-	let base64 = dataURI.substring(base64Index);
-	let raw = window.atob(base64);
-	let rawLength = raw.length;
-	let array = new Uint8Array(new ArrayBuffer(rawLength));
+  let response = await fetch(URL + "reim", {
+    method: "PUT",
+    body: JSON.stringify(status1),
+    credentials: "include", //This will save the cookie when we receive it.
+  });
 
-	for(let i = 0; i < rawLength; i++) {
-		array[i] = raw.charCodeAt(i);
-	}
-	return array;
+  if (response.status === 204) {
+    tbody.innerHTML = "";
+    thead.innerHTML = "";
+    viewTicket();
+  } else {
+    console.log("something went worng");
+  }
 }
-
-// File Reader
-// https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
-function readFile(evt) {
-    let f = evt.target.files[0]; 
-
-    if (f) {
-		if ( /(jpe?g|png|gif)$/i.test(f.type) ) {
-			let r = new FileReader();
-			r.onload = function(e) { 
-				let base64Img = e.target.result;
-			  binaryImg = convertDataURIToBinary(base64Img);
-				let blob = new Blob([binaryImg], {type: f.type});
-				blobURL = window.URL.createObjectURL(blob);
-				
-				
-				//console.log(blobURL);
-				
-				
-			//	document.getElementById('blobImg').src = blobURL;
-			//	document.getElementById('binaryImg').innerHTML = JSON.stringify(binaryImg, null, 2);
-			}
-			r.readAsDataURL(f);
-		} else { 
-			alert("Failed file type");
-		}
-    } else { 
-		alert("Failed to load file");
-    }
-}
-

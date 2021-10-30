@@ -2,14 +2,20 @@ package com.revature.dao;
 
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.revature.models.Reimbursment;
 import com.revature.utils.HibernateUtil;
+import java.util.Collections;
 
 public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 	private static Logger Log = LoggerFactory.getLogger(ReimbursmentDAOImpl.class);
@@ -29,10 +35,32 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 	}
 
 	@Override
-	public Reimbursment filterByStatus(String status) {
+	public List<Reimbursment> filterByStatus(String status) {
 		Log.debug("ReimbursmentDAOImpl >  filterByStatus()");
-		Session session = HibernateUtil.getSession();
-		return session.get(Reimbursment.class, status);
+		Transaction tx = null;
+		try {
+			
+			Session session = HibernateUtil.getSession();
+			tx = session.beginTransaction();
+			CriteriaBuilder builder = session.getCriteriaBuilder();
+			CriteriaQuery<Reimbursment> query = builder.createQuery(Reimbursment.class);
+			Root<Reimbursment> root = query.from(Reimbursment.class);
+			query.select(root).where(builder.equal(root.get("rstatus"), status));
+			Query<Reimbursment> q = session.createQuery(query);
+			List<Reimbursment> uc = q.getResultList();
+			tx.commit();
+			return uc;
+			
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			if (tx != null) {
+				tx.rollback();
+			}
+			return Collections.emptyList();
+		}
+
+		
 	}
 
 	@Override
@@ -43,7 +71,7 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 			Session session = HibernateUtil.getSession();
 			tx = session.beginTransaction();
 			System.out.println(rec);
-			//session.clear();
+			
 			session.save(rec);
 			
 			tx.commit();
@@ -60,13 +88,15 @@ public class ReimbursmentDAOImpl implements ReimbursmentDAO {
 	}
 
 	@Override
-	public boolean updateRec(Reimbursment rec) {
+	public boolean updateRec(int id, String status) {
 		Log.debug("ReimbursmentDAOImpl >  updateRec()");
 		Transaction tx = null;
 		try {
 			Session session = HibernateUtil.getSession();
 			tx = session.beginTransaction();
-			session.merge(rec);
+			Reimbursment reimUp = session.get(Reimbursment.class, id); 
+			reimUp.setRstatus(status);
+			session.merge(reimUp);
 			tx.commit();
 			HibernateUtil.closeSession();
 			return true;
