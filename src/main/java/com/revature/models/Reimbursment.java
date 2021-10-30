@@ -92,6 +92,13 @@ public class Reimbursment {
 		this.usr = usr;
 	}
 
+	public Reimbursment(double amount, String description, int reciptNo) {
+		super();
+		this.amount = amount;
+		this.description = description;
+		this.reciptNo = reciptNo;
+	}
+
 	public Reimbursment() {
 		super();
 	}
