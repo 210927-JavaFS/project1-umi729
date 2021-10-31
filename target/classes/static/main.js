@@ -1,5 +1,5 @@
 "use strict";
-const URL = "http://13.58.5.112:8081/";
+const URL = "http://13.58.5.112:7000/";
 // variable declariation
 let emplyeesection = document.getElementById("emplyeesection");
 let rmCheck = document.getElementById("rememberMe");
