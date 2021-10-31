@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Revature- Project-01</title>
+</head>
+
+<body class="p-3 mb-2 bg-gradient text-dark">
+    <div >
+        <!--Login display-->
+        <section id="login" class="container-fluid ">
+            <div class="modal-dialog" id="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Reimbursement Management System</h5>
+
+                    </div>
+                    <div class="modal-body">
+                        <form class="formClass">
+                            <div class="mb-3">
+                                <label class="form-label" for="username">Username</label>
+                                <input type="text" class="form-control" id="username" name="username"
+                                    placeholder="Username" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="Password" />
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="rememberMe" />
+                                <label class="form-check-label" for="rememberMe">Remember me</label>
+                            </div>
+                            <!-- <div class="modal-footer d-block">
+                    <p class="float-start">Not yet account <a href="#">Sign Up</a></p>-->
+
+                    </div>
+
+                    </form>
+                    <button class="btn btn-warning float-end" id="loginButton">Submit</button>
+                </div>
+            </div>
+        </section>
+        <!--End Login display-->
+        <!--Employee page display-->
+        <section id="emplyeesection">
+            <div class="container-fluid">
+                <header>
+                    <nav class="navbar navbar-expand-lg navbar-light bg-warning ">
+                        <div class="container-fluid">
+                          <a class="navbar-brand " href="">Expense Reimbursement System (ERS)</a>
+                          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                          </button>
+                          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                            <ul class="navbar-nav">
+                              <li class="nav-item mx-2">
+                                <button class="nav-link btn btn-outline-primary col-sm-12"  id="viewAllTicket" >View My Tickets</button>
+                              </li>
+                              <li class="nav-item mx-2">
+                                <button class="nav-link btn btn-outline-primary col-sm-12" id="newTicket" >Submit New Ticket</button>
+                              </li>
+                              <li class="nav-item ">
+                                <button class="nav-link btn btn-outline-primary col-sm-12" id="logout" >Logout</button>
+                              </li>
+                              
+                            </ul>
+                          </div>
+                        </div>
+                      </nav>
+                </header>
+                <main id="viewtickets">
+                  <div class="flex-row align-items-end justify-content-end  mt-2 mb-2" id="filt">
+                    <label for="filterby">Filter By</label> 
+                    <select id="filterby" name="filterby" >
+                       <option value="All">All</option>
+                       <option value="Pending">Pending</option>
+                       <option value="Approved">Approved</option>
+                       <option value="Denied">Denied</option>
+                     </select>
+                     <button class="btn-warning btn-sm"  id="btnGo">Go</button>
+                    </div>
+                    <table class="table table-success table-striped border border-1">
+                        <thead id="vh">
+
+                        </thead>
+                       <tbody id="vt">
+
+                        </tbody>
+                      </table>
+                      <div id="forAdmin" class="flex-row align-items-start justify-content-start">
+                        
+                      <form id="approval">
+                        <label for="apText">Enter ID number</label>
+                        <input type="text" id="apText" name="apText">
+                      </form>
+                      <button class=" btn btn-warning text-dark font-weight-bold btn-sm" id="Approve" style="margin-left: 5px;" >Approve</button>
+                      <button class=" btn btn-warning text-dark font-weight-bold btn-sm" id="Deny" >Deny</button>
+                   
+                    </div>
+                </main>
+                <main id="submittickets">
+                        <div class="container mx-auto col-4">
+                         
+                            <form id="addReim">
+                              <div class="mb-3">
+                                <label for="amount" class="form-label">Total Amount</label>
+                                <input type="text" class="form-control" required id="amount" aria-describedby="totalAmountRequesting">
+                              </div>
+                              <div class="mb-3">
+                                <label for="textarea1" class="form-label">Description</label>
+                                <textarea  class="form-control" id="textarea1" rows="3"></textarea>
+                              </div>
+                              <label for="typeofreim" class="form-label">Type of Expense</label>
+                              
+                              <select class="form-select form-select-sm form-control" required aria-label=".form-select-sm example" id="typeofreim">
+                                <option disabled selected>Select</option>
+                                <option value="FOOD">FOOD</option>
+                                <option value="LODGING">LODGING</option>
+                                <option value="TRAVEL">TRAVEL</option>
+                                <option value="OTHER">OTHER</option>
+                              </select>
+                              <div class="mb-3 my-1">
+                                <label for="receiptNo" class="form-label">Receipt No</label>
+                                <input type="text" class="form-control" id="receiptNo" aria-describedby="Receiptnumber">
+                              </div>
+                              <!-- <div class="input-group mb-3">
+                                <input type="file" class="form-control" id="inputGroupFile02">
+                                <label class="input-group-text" for="inputGroupFile02">Upload Receipt</label>
+                              </div> -->
+                            
+                            </form>
+                            <button  class="btn btn-warning" id="btnAdd">Submit</button>
+                        </div>
+                </main>
+                <footer>
+
+                </footer>
+            </div>
+        </section>
+
+    </div>
+
+
+    </div>
+
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>

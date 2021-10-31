@@ -2,6 +2,9 @@ package com.revature.services;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.revature.dao.UserClassDAO;
 import com.revature.dao.UserClassDAOImpl;
 import com.revature.dao.UserRolesDAO;
@@ -10,6 +13,7 @@ import com.revature.models.UserClass;
 import com.revature.models.UserRoles;
 
 public class UserClassSer {
+	private static Logger Log = LoggerFactory.getLogger(UserClassSer.class);
 	private static UserClassDAO uc = new UserClassDAOImpl();
 	private static UserClass logUser;
 	private static UserRolesDAO urdao=new UserRolesDAOImpl();
@@ -60,7 +64,7 @@ public class UserClassSer {
 		return uc.delete(rec);
 	}
 	public static UserClass login(UserClass rec) {
-		
+		Log.debug("User login in service layer >  login()");
 		rec.setPassword(ae.encrypt(rec.getPassword()));
 		if(uc.login(rec)!=null) {
 			

@@ -40,10 +40,6 @@ class ReimbursmentDAOImplTest {
 		     
 		    assertFalse(resultList.isEmpty());
 	}
-
-	
-	
-
 	@Test
 	void testAddNewRec() {
 		  
