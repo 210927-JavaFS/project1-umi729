@@ -26,6 +26,7 @@ Java 8, SQL, Bootstrap 5, CSS,  HTML, JavaScript, JUnit, Hibernate, AWS RDS, Log
 <li>DAO design pattern</li></li>
 
 </ul>
+
 ## Getting Started/ Setting Up
 
 1. Navigate to the desired directory on your system, to host the project inside a Terminal or console
